@@ -39,14 +39,21 @@ model.fit(X_train_balanced, Y_train_balanced)
 y_pred = model.predict(X_test)
 
 # Evaluate the model
-print(f"Accuracy: {accuracy_score(Y_test, y_pred)}")
-print("Classification Report:")
-print(classification_report(Y_test, y_pred))
-
-# Confusion Matrix
+accuracy = accuracy_score(Y_test, y_pred)
+class_report = classification_report(Y_test, y_pred)
 conf_matrix = confusion_matrix(Y_test, y_pred)
+
+# Calculate specificity
+tn, fp, fn, tp = conf_matrix.ravel()
+specificity = tn / (tn + fp)
+
+print(f"Accuracy: {accuracy}")
+print("Classification Report:")
+print(class_report)
 print("Confusion Matrix:")
 print(conf_matrix)
+print(f"Specificity: {specificity}")
+
 
 # Save the trained model
 joblib.dump((model, X_train_balanced.shape[1]), 'stroke_predictor.pkl')
